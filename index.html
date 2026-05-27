@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CEVA Logistics — Candidate Resume Scanner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ceva-navy: #002855;
+    --ceva-blue: #003087;
+    --ceva-red: #C8102E;
+    --ceva-light-blue: #e4ecf7;
+    --bg: #f2f4f7;
+    --surface: #ffffff;
+    --surface2: #f7f8fa;
+    --border: rgba(0,0,0,0.09);
+    --border-strong: rgba(0,0,0,0.15);
+    --text: #1a1d23;
+    --text-muted: #6b7280;
+    --text-faint: #9ca3af;
+    --green: #166534; --green-bg: #dcfce7; --green-mid: #16a34a;
+    --blue: #1e40af; --blue-bg: #dbeafe; --blue-mid: #2563eb;
+    --amber: #92400e; --amber-bg: #fef3c7; --amber-mid: #d97706;
+    --red: #991b1b; --red-bg: #fee2e2; --red-mid: #dc2626;
+    --purple-bg: #f3e8ff; --purple: #6b21a8;
+    --radius: 10px;
+    --radius-lg: 14px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.05);
+    --shadow-lg: 0 4px 24px rgba(0,0,0,0.10);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    line-height: 1.6;
+  }
+
+  .page { max-width: 800px; margin: 0 auto; }
+
+  /* ── Header ── */
+  .site-header {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--ceva-navy);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow-lg);
+  }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .logo-mark {
+    background: #fff; border-radius: 6px;
+    padding: 5px 10px; display: flex; align-items: center; justify-content: center; height: 42px;
+  }
+  .logo-mark img { height: 28px; width: auto; display: block; }
+  .header-titles h1 { font-size: 15px; font-weight: 500; color: #fff; letter-spacing: 0.2px; }
+  .header-titles p { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+  .header-badge {
+    font-size: 11px; font-weight: 500;
+    background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.75);
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 12px;
+  }
+
+  /* ── Password Gate ── */
+  .gate-overlay {
+    position: fixed; inset: 0; z-index: 1000;
+    background: var(--ceva-navy);
+    display: flex; align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .gate-box {
+    background: var(--surface); border-radius: var(--radius-lg);
+    padding: 2.5rem 2rem; width: 100%; max-width: 380px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4); text-align: center;
+  }
+  .gate-logo {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: var(--ceva-navy); border-radius: 8px;
+    padding: 8px 14px; margin-bottom: 1.5rem; height: 52px;
+  }
+  .gate-logo img { height: 32px; width: auto; }
+  .gate-box h2 { font-size: 16px; font-weight: 600; color: var(--ceva-navy); margin-bottom: 4px; }
+  .gate-box p { font-size: 13px; color: var(--text-muted); margin-bottom: 1.5rem; }
+  .gate-input-wrap { position: relative; margin-bottom: 10px; }
+  .gate-input-wrap input {
+    width: 100%; padding: 11px 42px 11px 14px; font-size: 15px;
+    border: 1.5px solid var(--border-strong); border-radius: var(--radius);
+    background: var(--surface2); color: var(--text); outline: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .gate-input-wrap input:focus {
+    border-color: var(--ceva-blue); box-shadow: 0 0 0 3px rgba(0,48,135,0.1); background: #fff;
+  }
+  .gate-toggle {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    cursor: pointer; color: var(--text-muted); background: none; border: none; padding: 0;
+    display: flex; align-items: center;
+  }
+  .gate-toggle:hover { color: var(--text); }
+  .gate-toggle svg { width: 17px; height: 17px; }
+  .gate-btn {
+    width: 100%; background: var(--ceva-blue); color: #fff; border: none;
+    border-radius: var(--radius); padding: 12px; font-size: 14px; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.15s;
+  }
+  .gate-btn:hover { background: #003fa3; }
+  .gate-error {
+    font-size: 12px; color: var(--red); display: none;
+    background: var(--red-bg); border-radius: 6px; padding: 7px 10px; margin-top: 6px;
+  }
+  .gate-hint { font-size: 11px; color: var(--text-faint); margin-top: 10px; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 1.25rem;
+    margin-bottom: 1rem; box-shadow: var(--shadow);
+  }
+  .card-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--text-muted);
+    margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+  }
+  .card-label svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ── Upload ── */
+  .upload-zone {
+    border: 2px dashed var(--border-strong); border-radius: var(--radius);
+    padding: 2.5rem 1.5rem; text-align: center; cursor: pointer;
+    background: var(--surface2); transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.drag-over { border-color: var(--ceva-blue); background: var(--ceva-light-blue); }
+  .upload-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-icon { color: var(--ceva-blue); margin-bottom: 10px; }
+  .upload-icon svg { width: 36px; height: 36px; }
+  .upload-main { font-size: 14px; font-weight: 500; color: var(--text); }
+  .upload-sub { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  .file-pill {
+    display: none; align-items: center; gap: 10px;
+    background: var(--ceva-light-blue); border: 1px solid rgba(0,48,135,0.2);
+    border-radius: var(--radius); padding: 10px 14px; font-size: 13px;
+  }
+  .file-pill svg { color: var(--ceva-blue); width: 18px; height: 18px; flex-shrink: 0; }
+  .file-pill .fname { flex: 1; font-weight: 500; color: var(--ceva-blue); }
+  .file-pill .fclear { cursor: pointer; color: var(--text-muted); padding: 2px; }
+  .file-pill .fclear:hover { color: var(--ceva-red); }
+  .file-pill .fclear svg { width: 16px; height: 16px; }
+
+  /* ── Grid ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 560px) { .two-col { grid-template-columns: 1fr; } }
+
+  /* ── Inputs ── */
+  input[type=text], input[type=password], textarea, select {
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--text); background: var(--surface2); border: 1px solid var(--border-strong);
+    border-radius: var(--radius); padding: 10px 12px; outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  input[type=text]:focus, input[type=password]:focus, textarea:focus {
+    border-color: var(--ceva-blue); box-shadow: 0 0 0 3px rgba(0,48,135,0.1); background: #fff;
+  }
+  textarea { height: 110px; resize: vertical; }
+
+  /* ── Buttons ── */
+  .scan-btn {
+    width: 100%; background: var(--ceva-blue); color: #fff; border: none;
+    border-radius: var(--radius); padding: 14px; font-family: 'DM Sans', sans-serif;
+    font-size: 15px; font-weight: 500; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    transition: background 0.2s, transform 0.1s; margin-top: 0.25rem;
+  }
+  .scan-btn:hover { background: #003fa3; }
+  .scan-btn:active { transform: scale(0.99); }
+  .scan-btn:disabled { background: #7a92b8; cursor: not-allowed; transform: none; }
+  .scan-btn svg { width: 18px; height: 18px; }
+
+  .action-btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: transparent; border: 1px solid var(--border-strong);
+    border-radius: var(--radius); padding: 10px 18px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    color: var(--text-muted); cursor: pointer; transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .action-btn:hover { background: var(--surface); color: var(--text); border-color: var(--ceva-blue); }
+  .action-btn svg { width: 15px; height: 15px; }
+  .action-btn.primary { background: var(--ceva-blue); color: #fff; border-color: var(--ceva-blue); }
+  .action-btn.primary:hover { background: #003fa3; }
+
+  .action-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1rem; }
+
+  .spinner {
+    width: 17px; height: 17px; border: 2.5px solid rgba(255,255,255,0.35);
+    border-top-color: #fff; border-radius: 50%;
+    animation: spin 0.65s linear infinite; display: inline-block; flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Error ── */
+  .error-box {
+    background: var(--red-bg); color: var(--red);
+    border: 1px solid rgba(220,38,38,0.25); border-radius: var(--radius);
+    padding: 10px 14px; font-size: 13px; display: none;
+    align-items: center; gap: 8px; margin-top: 0.75rem;
+  }
+  .error-box svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  /* ── Results ── */
+  .results-wrap { margin-top: 1.5rem; display: none; }
+
+  .results-header {
+    background: var(--ceva-navy); border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    padding: 1.2rem 1.5rem; display: flex; align-items: center; justify-content: space-between; color: #fff;
+  }
+  .results-header h2 { font-size: 15px; font-weight: 500; }
+  .results-header .sub { font-size: 12px; opacity: 0.55; margin-top: 2px; }
+
+  .results-body {
+    background: var(--surface); border: 1px solid var(--border);
+    border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow);
+  }
+
+  /* ── Score ring ── */
+  .score-area {
+    display: flex; align-items: center; gap: 2rem;
+    padding: 1.5rem; border-bottom: 1px solid var(--border);
+  }
+  @media (max-width: 480px) { .score-area { flex-direction: column; gap: 1rem; } }
+  .score-ring { position: relative; width: 120px; height: 120px; flex-shrink: 0; }
+  .score-ring svg { transform: rotate(-90deg); }
+  .score-ring-text {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .score-num { font-size: 32px; font-weight: 600; line-height: 1; }
+  .score-denom { font-size: 12px; color: var(--text-muted); }
+  .score-info { flex: 1; }
+  .score-badge {
+    display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+    padding: 4px 12px; border-radius: 20px; margin-bottom: 8px; text-transform: uppercase;
+  }
+  .score-headline { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+  .score-blurb { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+
+  /* ── Sub scores ── */
+  .sub-scores {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border);
+  }
+  @media (max-width: 480px) { .sub-scores { grid-template-columns: 1fr; } }
+  .sub-score-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+  .sub-score-label { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .sub-score-val { font-size: 13px; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .bar-track { height: 5px; background: var(--bg); border-radius: 3px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; transition: width 1.2s cubic-bezier(0.22,1,0.36,1); }
+
+  /* ── Detail grid ── */
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+  @media (max-width: 560px) { .detail-grid { grid-template-columns: 1fr; } }
+  .detail-col { padding: 1.25rem 1.5rem; }
+  .detail-col:first-child { border-right: 1px solid var(--border); }
+  .detail-heading {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+  }
+  .detail-heading svg { width: 14px; height: 14px; }
+  .detail-list { list-style: none; }
+  .detail-list li {
+    font-size: 13px; color: var(--text-muted); padding: 4px 0 4px 14px;
+    position: relative; line-height: 1.5; border-bottom: 1px solid var(--border);
+  }
+  .detail-list li:last-child { border-bottom: none; }
+  .detail-list li::before { content: "•"; position: absolute; left: 0; }
+
+  /* ── Questions ── */
+  .questions-section { padding: 1.25rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .qs-title {
+    font-size: 13px; font-weight: 600; color: var(--ceva-navy);
+    margin-bottom: 14px; display: flex; align-items: center; gap: 7px;
+  }
+  .qs-title svg { width: 15px; height: 15px; }
+  .q-group-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 4px; display: inline-block; margin-bottom: 6px;
+  }
+  .q-group-label.role { background: var(--blue-bg); color: var(--blue); }
+  .q-group-label.personality { background: var(--purple-bg); color: var(--purple); }
+  .q-group-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+  .q-list { list-style: none; margin-bottom: 16px; }
+  .q-list:last-child { margin-bottom: 0; }
+  .q-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 8px 10px; border-radius: var(--radius);
+    border: 1px solid var(--border); margin-bottom: 6px;
+    background: var(--surface2); font-size: 13px; color: var(--text); line-height: 1.5;
+  }
+  .q-item:last-child { margin-bottom: 0; }
+  .q-num {
+    font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500;
+    color: var(--text-muted); flex-shrink: 0; padding-top: 1px; min-width: 22px;
+  }
+
+  /* ── Recommendation ── */
+  .recommendation {
+    margin: 1.25rem 1.5rem;
+    background: var(--ceva-light-blue); border-left: 4px solid var(--ceva-blue);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 12px 16px; font-size: 13px; color: var(--text); line-height: 1.6;
+  }
+  .recommendation strong { color: var(--ceva-navy); }
+
+  /* ── Notes ── */
+  .notes-section {
+    border-top: 1px solid var(--border);
+    padding: 1.25rem 1.5rem;
+  }
+  .notes-header {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; color: var(--ceva-navy); margin-bottom: 10px;
+  }
+  .notes-header svg { width: 15px; height: 15px; }
+  .notes-sub { font-size: 11px; color: var(--text-muted); margin-bottom: 10px; }
+  #interview-notes {
+    width: 100%; height: 130px; resize: vertical;
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    border: 1px solid var(--border-strong); border-radius: var(--radius);
+    padding: 10px 12px; background: var(--surface2); color: var(--text);
+    outline: none; transition: border-color 0.15s, box-shadow 0.15s;
+    line-height: 1.6;
+  }
+  #interview-notes:focus {
+    border-color: var(--ceva-blue); box-shadow: 0 0 0 3px rgba(0,48,135,0.1); background: #fff;
+  }
+
+  /* ── Print styles ── */
+  @media print {
+    body { background: #fff; padding: 0; font-size: 12px; }
+    .scan-form, .gate-overlay, .action-row, .no-print { display: none !important; }
+    .results-wrap { display: block !important; margin-top: 0; }
+    .site-header { border-radius: 0; box-shadow: none; margin-bottom: 1rem; }
+    .results-body { border-radius: 0; box-shadow: none; }
+    .score-area { padding: 1rem; }
+    .bar-fill { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    #interview-notes {
+      border: 1px solid #ccc; background: #fff;
+      min-height: 80px; height: auto;
+    }
+    .notes-section { border-top: 1px solid #ccc; }
+    .q-item { border: 1px solid #ddd; background: #f9f9f9; }
+    .recommendation { background: #eaf2ff; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Password Gate -->
+<div class="gate-overlay" id="gate-overlay">
+  <div class="gate-box">
+    <div class="gate-logo">
+      <img src="https://www.freelogovectors.net/wp-content/uploads/2022/07/ceva-logistics-logo-freelogovectors.net_.png" alt="CEVA Logistics" />
+    </div>
+    <h2>Resume Scanner</h2>
+    <p>This tool is for authorized CEVA Logistics staff only.<br>Please enter the access password to continue.</p>
+    <div class="gate-input-wrap">
+      <input type="password" id="gate-password" placeholder="Enter password" autocomplete="off"
+        onkeydown="if(event.key==='Enter') checkPassword()" />
+      <button class="gate-toggle" onclick="toggleGatePw()" type="button" title="Show/hide password">
+        <svg id="gate-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+    <div class="gate-error" id="gate-error">Incorrect password. Please try again.</div>
+    <button class="gate-btn" onclick="checkPassword()">Enter</button>
+    <div class="gate-hint">Contact your facility manager if you need access.</div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <div class="logo-mark">
+        <img src="https://www.freelogovectors.net/wp-content/uploads/2022/07/ceva-logistics-logo-freelogovectors.net_.png" alt="CEVA Logistics" />
+      </div>
+      <div class="header-titles">
+        <h1>Candidate Resume Scanner</h1>
+        <p>Millington Facility &nbsp;·&nbsp; Powered by AI</p>
+      </div>
+    </div>
+    <div class="header-badge">Confidential</div>
+  </header>
+
+  <!-- Scan Form -->
+  <div class="scan-form">
+
+    <!-- Resume Upload -->
+    <div class="card">
+      <div class="card-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Resume / CV
+      </div>
+      <div class="upload-zone" id="upload-zone">
+        <input type="file" id="resume-file" accept=".pdf,.txt,.doc,.docx" />
+        <div class="upload-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0018 9h-1.26A8 8 0 103 16.3"/></svg>
+        </div>
+        <div class="upload-main">Drop resume here or click to browse</div>
+        <div class="upload-sub">PDF or TXT recommended &nbsp;·&nbsp; File is read locally, never uploaded</div>
+      </div>
+      <div class="file-pill" id="file-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span class="fname" id="file-name">—</span>
+        <span class="fclear" id="clear-file" title="Remove">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </span>
+      </div>
+    </div>
+
+    <!-- Job Title + Candidate Name -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+          Job Title
+        </div>
+        <input type="text" id="job-title" placeholder="e.g. Forklift Operator, Warehouse Associate…" />
+      </div>
+      <div class="card">
+        <div class="card-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Candidate Name <span style="font-weight:400;text-transform:none;font-size:11px;letter-spacing:0;">(optional)</span>
+        </div>
+        <input type="text" id="candidate-name" placeholder="e.g. John Smith" />
+      </div>
+    </div>
+
+    <!-- Job Description -->
+    <div class="card">
+      <div class="card-label">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Job Description <span style="font-weight:400;text-transform:none;font-size:11px;letter-spacing:0;">(recommended — paste full posting for best results)</span>
+      </div>
+      <textarea id="job-desc" placeholder="Paste the full job description here — responsibilities, requirements, qualifications, physical demands…"></textarea>
+    </div>
+
+    <button class="scan-btn" id="scan-btn" onclick="runScan()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      Analyze Candidate Fit
+    </button>
+
+    <div class="error-box" id="error-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span id="error-text"></span>
+    </div>
+
+  </div>
+
+  <!-- Results -->
+  <div class="results-wrap" id="results-wrap">
+
+    <div class="results-header">
+      <div>
+        <h2>Candidate Fit Analysis</h2>
+        <div class="sub" id="r-sub">—</div>
+      </div>
+      <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" width="26" height="26"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    </div>
+
+    <div class="results-body">
+
+      <!-- Score Ring -->
+      <div class="score-area">
+        <div class="score-ring">
+          <svg width="120" height="120" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+            <circle id="score-arc" cx="50" cy="50" r="42" fill="none" stroke="#003087" stroke-width="8"
+              stroke-dasharray="263.9" stroke-dashoffset="263.9" stroke-linecap="round"
+              style="transition: stroke-dashoffset 1.2s cubic-bezier(0.22,1,0.36,1);"/>
+          </svg>
+          <div class="score-ring-text">
+            <span class="score-num" id="r-score">—</span>
+            <span class="score-denom">/100</span>
+          </div>
+        </div>
+        <div class="score-info">
+          <div class="score-badge" id="r-badge">—</div>
+          <div class="score-headline" id="r-headline">—</div>
+          <div class="score-blurb" id="r-blurb">—</div>
+        </div>
+      </div>
+
+      <!-- Sub Scores -->
+      <div class="sub-scores" id="r-sub-scores"></div>
+
+      <!-- Strengths + Gaps -->
+      <div class="detail-grid">
+        <div class="detail-col">
+          <div class="detail-heading" style="color:var(--green);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Key Strengths
+          </div>
+          <ul class="detail-list" id="r-strengths"></ul>
+        </div>
+        <div class="detail-col">
+          <div class="detail-heading" style="color:var(--amber);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Potential Gaps
+          </div>
+          <ul class="detail-list" id="r-gaps"></ul>
+        </div>
+      </div>
+
+      <!-- Interview Questions -->
+      <div class="questions-section">
+        <div class="qs-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          Interview Questions
+        </div>
+
+        <div class="q-group-label role">Role-Specific</div>
+        <div class="q-group-sub">Connecting the candidate's background directly to the position</div>
+        <ul class="q-list" id="r-role-questions"></ul>
+
+        <div class="q-group-label personality">Personality &amp; Behavioral</div>
+        <div class="q-group-sub">Assessing culture fit, work ethic, and psychological suitability</div>
+        <ul class="q-list" id="r-personality-questions"></ul>
+      </div>
+
+      <!-- Recommendation -->
+      <div class="recommendation" id="r-recommendation"></div>
+
+      <!-- Interviewer Notes -->
+      <div class="notes-section">
+        <div class="notes-header">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Interviewer Notes
+        </div>
+        <div class="notes-sub">Use this space to capture observations, follow-up points, or impressions during the interview. These notes will appear on the printed report.</div>
+        <textarea id="interview-notes" placeholder="Enter your notes here…"></textarea>
+      </div>
+
+    </div><!-- /results-body -->
+
+    <!-- Action Row -->
+    <div class="action-row">
+      <button class="action-btn primary" onclick="window.print()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save as PDF
+      </button>
+      <button class="action-btn" onclick="exportTxt()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export as Text File
+      </button>
+      <button class="action-btn" onclick="resetScan()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+        New Candidate
+      </button>
+    </div>
+
+  </div><!-- /results-wrap -->
+
+</div><!-- /page -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+let resumeText = '';
+let fileReady = false;
+let lastResult = null;
+let lastCandidate = '';
+
+/* ═══════════════════════════════════════════
+   PDF.js
+═══════════════════════════════════════════ */
+if (window['pdfjs-dist/build/pdf']) {
+  window['pdfjs-dist/build/pdf'].GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+}
+
+/* ═══════════════════════════════════════════
+   PASSWORD GATE
+═══════════════════════════════════════════ */
+const CORRECT_PASSWORD = 'Welcome2Ceva!';
+
+function checkPassword() {
+  const entered = document.getElementById('gate-password').value;
+  if (entered === CORRECT_PASSWORD) {
+    document.getElementById('gate-overlay').style.display = 'none';
+  } else {
+    document.getElementById('gate-error').style.display = 'block';
+    document.getElementById('gate-password').value = '';
+    document.getElementById('gate-password').focus();
+  }
+}
+
+function toggleGatePw() {
+  const inp = document.getElementById('gate-password');
+  const eye = document.getElementById('gate-eye');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    eye.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  } else {
+    inp.type = 'password';
+    eye.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+  }
+}
+
+/* ═══════════════════════════════════════════
+   FILE UPLOAD
+═══════════════════════════════════════════ */
+const uploadZone = document.getElementById('upload-zone');
+const fileInput  = document.getElementById('resume-file');
+const filePill   = document.getElementById('file-pill');
+const fileNameEl = document.getElementById('file-name');
+
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault(); uploadZone.classList.remove('drag-over');
+  if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+document.getElementById('clear-file').addEventListener('click', clearFile);
+
+function handleFile(file) {
+  fileNameEl.textContent = file.name;
+  uploadZone.style.display = 'none';
+  filePill.style.display = 'flex';
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (ext === 'txt') {
+    const r = new FileReader();
+    r.onload = e => { resumeText = e.target.result; fileReady = true; };
+    r.readAsText(file);
+  } else if (ext === 'pdf') {
+    readPDF(file);
+  } else {
+    resumeText = `[Uploaded: ${file.name} — for best results, use PDF or TXT format]`;
+    fileReady = true;
+  }
+}
+
+async function readPDF(file) {
+  try {
+    const lib = window['pdfjs-dist/build/pdf'];
+    if (!lib) throw new Error('pdf.js not ready');
+    const buf = await file.arrayBuffer();
+    const pdf = await lib.getDocument({ data: buf }).promise;
+    let txt = '';
+    for (let i = 1; i <= Math.min(pdf.numPages, 6); i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      txt += content.items.map(s => s.str).join(' ') + '\n';
+    }
+    resumeText = txt.trim() || `[PDF uploaded: ${file.name} — text could not be extracted; may be image-based. Try saving as TXT.]`;
+    fileReady = true;
+  } catch(e) {
+    resumeText = `[PDF read failed: ${e.message}]`;
+    fileReady = true;
+  }
+}
+
+function clearFile() {
+  resumeText = ''; fileReady = false; fileInput.value = '';
+  filePill.style.display = 'none';
+  uploadZone.style.display = '';
+}
+
+/* ═══════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════ */
+function showError(msg) {
+  const b = document.getElementById('error-box');
+  document.getElementById('error-text').textContent = msg;
+  b.style.display = 'flex';
+}
+function hideError() { document.getElementById('error-box').style.display = 'none'; }
+
+function scoreColor(s) {
+  if (s >= 80) return 'var(--green-mid)';
+  if (s >= 60) return 'var(--blue-mid)';
+  if (s >= 40) return 'var(--amber-mid)';
+  return 'var(--red-mid)';
+}
+function badgeStyle(s) {
+  if (s >= 80) return { bg: 'var(--green-bg)', color: 'var(--green)', label: 'Strong Fit' };
+  if (s >= 65) return { bg: 'var(--blue-bg)', color: 'var(--blue)', label: 'Good Fit' };
+  if (s >= 45) return { bg: 'var(--amber-bg)', color: 'var(--amber)', label: 'Moderate Fit' };
+  return { bg: 'var(--red-bg)', color: 'var(--red)', label: 'Weak Fit' };
+}
+
+/* ═══════════════════════════════════════════
+   RENDER
+═══════════════════════════════════════════ */
+function renderResults(data, candidateName) {
+  lastResult = data; lastCandidate = candidateName;
+  const score = Math.round(data.overall_score);
+  const b = badgeStyle(score);
+  const circ = 2 * Math.PI * 42;
+  const offset = circ * (1 - score / 100);
+
+  document.getElementById('r-sub').textContent =
+    (candidateName ? candidateName + '  ·  ' : '') + data.position_analyzed;
+
+  const arc = document.getElementById('score-arc');
+  arc.setAttribute('stroke', scoreColor(score));
+  arc.setAttribute('stroke-dasharray', circ.toFixed(1));
+  setTimeout(() => arc.setAttribute('stroke-dashoffset', offset.toFixed(1)), 80);
+
+  const scoreEl = document.getElementById('r-score');
+  scoreEl.textContent = score;
+  scoreEl.style.color = scoreColor(score);
+
+  const badge = document.getElementById('r-badge');
+  badge.textContent = b.label;
+  badge.style.background = b.bg;
+  badge.style.color = b.color;
+
+  document.getElementById('r-headline').textContent = data.summary_headline;
+  document.getElementById('r-blurb').textContent = data.summary_blurb;
+
+  const ssEl = document.getElementById('r-sub-scores');
+  ssEl.innerHTML = data.sub_scores.map(s => {
+    const sc = Math.round(s.score);
+    return `<div class="sub-score">
+      <div class="sub-score-top">
+        <span class="sub-score-label">${s.label}</span>
+        <span class="sub-score-val" style="color:${scoreColor(sc)}">${sc}%</span>
+      </div>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:0%;background:${scoreColor(sc)};" data-target="${sc}"></div>
+      </div>
+    </div>`;
+  }).join('');
+  setTimeout(() => {
+    ssEl.querySelectorAll('.bar-fill').forEach(el => { el.style.width = el.dataset.target + '%'; });
+  }, 100);
+
+  document.getElementById('r-strengths').innerHTML = data.strengths.map(s => `<li>${s}</li>`).join('');
+  document.getElementById('r-gaps').innerHTML = data.gaps.map(g => `<li>${g}</li>`).join('');
+
+  document.getElementById('r-role-questions').innerHTML =
+    data.role_questions.map((q, i) =>
+      `<li class="q-item"><span class="q-num">R${i+1}</span><span>${q}</span></li>`
+    ).join('');
+
+  document.getElementById('r-personality-questions').innerHTML =
+    data.personality_questions.map((q, i) =>
+      `<li class="q-item"><span class="q-num">P${i+1}</span><span>${q}</span></li>`
+    ).join('');
+
+  document.getElementById('r-recommendation').innerHTML =
+    `<strong>Hiring recommendation:</strong> ${data.recommendation}`;
+
+  document.getElementById('interview-notes').value = '';
+  document.getElementById('results-wrap').style.display = 'block';
+  document.getElementById('results-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* ═══════════════════════════════════════════
+   EXPORT AS TEXT
+═══════════════════════════════════════════ */
+function exportTxt() {
+  if (!lastResult) return;
+  const d = lastResult;
+  const notes = document.getElementById('interview-notes').value.trim();
+  const now = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+  const divider = '─'.repeat(60);
+
+  let out = `CEVA LOGISTICS — CANDIDATE FIT ANALYSIS\n`;
+  out += `${divider}\n`;
+  out += `Date: ${now}\n`;
+  if (lastCandidate) out += `Candidate: ${lastCandidate}\n`;
+  out += `Position: ${d.position_analyzed}\n`;
+  out += `Overall Score: ${Math.round(d.overall_score)}/100\n\n`;
+
+  out += `SUMMARY\n${divider}\n${d.summary_headline}\n${d.summary_blurb}\n\n`;
+
+  out += `SCORES\n${divider}\n`;
+  d.sub_scores.forEach(s => { out += `  ${s.label}: ${Math.round(s.score)}%\n`; });
+  out += '\n';
+
+  out += `KEY STRENGTHS\n${divider}\n`;
+  d.strengths.forEach(s => { out += `  • ${s}\n`; });
+  out += '\n';
+
+  out += `POTENTIAL GAPS\n${divider}\n`;
+  d.gaps.forEach(g => { out += `  • ${g}\n`; });
+  out += '\n';
+
+  out += `ROLE-SPECIFIC INTERVIEW QUESTIONS\n${divider}\n`;
+  d.role_questions.forEach((q, i) => { out += `  R${i+1}. ${q}\n\n`; });
+
+  out += `PERSONALITY & BEHAVIORAL INTERVIEW QUESTIONS\n${divider}\n`;
+  d.personality_questions.forEach((q, i) => { out += `  P${i+1}. ${q}\n\n`; });
+
+  out += `HIRING RECOMMENDATION\n${divider}\n${d.recommendation}\n\n`;
+
+  if (notes) {
+    out += `INTERVIEWER NOTES\n${divider}\n${notes}\n`;
+  }
+
+  const blob = new Blob([out], { type: 'text/plain' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const safeName = (lastCandidate || 'candidate').replace(/\s+/g, '_').toLowerCase();
+  a.href = url; a.download = `ceva_scan_${safeName}_${Date.now()}.txt`;
+  a.click(); URL.revokeObjectURL(url);
+}
+
+/* ═══════════════════════════════════════════
+   RESET
+═══════════════════════════════════════════ */
+function resetScan() {
+  clearFile();
+  document.getElementById('job-title').value = '';
+  document.getElementById('candidate-name').value = '';
+  document.getElementById('job-desc').value = '';
+  document.getElementById('results-wrap').style.display = 'none';
+  document.getElementById('interview-notes').value = '';
+  hideError(); lastResult = null; lastCandidate = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ═══════════════════════════════════════════
+   SCAN
+═══════════════════════════════════════════ */
+async function runScan() {
+  hideError();
+  const jobTitle      = document.getElementById('job-title').value.trim();
+  const jobDesc       = document.getElementById('job-desc').value.trim();
+  const candidateName = document.getElementById('candidate-name').value.trim();
+
+  if (!fileReady || !resumeText) { showError('Please upload a resume first.'); return; }
+  if (!jobTitle) { showError('Please enter a job title before scanning.'); return; }
+
+  const btn = document.getElementById('scan-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Analyzing candidate…';
+  document.getElementById('results-wrap').style.display = 'none';
+
+  const jdBlock = jobDesc
+    ? `\n\nJob Description:\n${jobDesc}`
+    : `\n\nNo job description provided. Use your knowledge of typical logistics/warehouse duties for the role "${jobTitle}".`;
+
+  const prompt = `You are a senior HR analyst for CEVA Logistics, a global logistics company. Analyze the following resume for the position of "${jobTitle}" at a CEVA Logistics warehouse facility.${jdBlock}
+
+Resume Content:
+${resumeText.slice(0, 7000)}
+
+Produce a thorough, honest, and actionable fit analysis. Return ONLY valid JSON — no markdown fences, no explanation, no preamble. Use exactly this structure:
+
+{
+  "overall_score": <integer 0-100>,
+  "position_analyzed": "<the job title as provided>",
+  "summary_headline": "<8-12 word punchy headline capturing this candidate's overall fit>",
+  "summary_blurb": "<2-3 sentences: honest, specific assessment drawing on actual resume content>",
+  "sub_scores": [
+    {"label": "Relevant Experience", "score": <0-100>},
+    {"label": "Skills & Certifications", "score": <0-100>},
+    {"label": "Education & Training", "score": <0-100>},
+    {"label": "Reliability Indicators", "score": <0-100>}
+  ],
+  "strengths": [
+    "<specific strength drawn directly from resume — cite actual experience, role, or credential>",
+    "<specific strength 2>",
+    "<specific strength 3>"
+  ],
+  "gaps": [
+    "<specific gap or concern relative to this role>",
+    "<specific gap or concern 2>"
+  ],
+  "role_questions": [
+    "<Question directly connecting a specific resume item to a requirement of '${jobTitle}' — reference actual content from the resume>",
+    "<Role question 2 — different aspect>",
+    "<Role question 3 — different aspect>"
+  ],
+  "personality_questions": [
+    "<STAR-format behavioral question revealing work ethic, stress response, or team fit for a warehouse/logistics environment>",
+    "<Behavioral question revealing reliability, accountability, or attitude toward physical/repetitive work>",
+    "<Behavioral question revealing conflict resolution, communication style, or long-term commitment>"
+  ],
+  "recommendation": "<3-4 sentences: specific, actionable recommendation for CEVA Logistics hiring managers — whether to advance to interview, any conditions, what to probe further>"
+}`;
+
+  try {
+    const res = await fetch('/.netlify/functions/proxy', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1500,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error?.message || `API error ${res.status}`);
+    }
+
+    const data = await res.json();
+    const raw  = data.content.map(b => b.text || '').join('');
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+    renderResults(parsed, candidateName);
+
+  } catch(err) {
+    console.error(err);
+    if (err.message.includes('401') || err.message.toLowerCase().includes('auth')) {
+      showError('Invalid API key. Please check your key and try again.');
+    } else {
+      showError('Analysis failed: ' + err.message);
+    }
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg> Analyze Candidate Fit`;
+  }
+}
+</script>
+</body>
+</html>
