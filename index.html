@@ -866,7 +866,7 @@ async function runScan() {
 Resume Content:
 ${resumeText.slice(0, 7000)}
 
-Produce a thorough, honest, and actionable fit analysis. Return ONLY valid JSON — no markdown fences, no explanation, no preamble. Use exactly this structure:
+Produce a thorough, honest, and actionable fit analysis. Return ONLY valid JSON — no markdown fences, no explanation, no preamble, no trailing text. All string values must be on a single line with no line breaks inside them. Use exactly this structure:
 
 {
   "overall_score": <integer 0-100>,
@@ -924,8 +924,23 @@ Produce a thorough, honest, and actionable fit analysis. Return ONLY valid JSON 
     const data = await res.json();
     if (data.error) throw new Error(data.error?.message || 'Groq API error');
     const raw = data.choices?.[0]?.message?.content || '';
-    const clean = raw.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
+    // Strip markdown fences
+    let clean = raw.replace(/```json|```/g, '').trim();
+    // Extract just the JSON object in case there is extra text around it
+    const jsonMatch = clean.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No valid JSON found in response. Please try again.');
+    clean = jsonMatch[0];
+    // Fix unescaped control characters inside string values
+    clean = clean.replace(/[\u0000-\u001F\u007F]/g, (ch) => {
+      if (ch === '\n' || ch === '\r' || ch === '\t') return ' ';
+      return '';
+    });
+    let parsed;
+    try {
+      parsed = JSON.parse(clean);
+    } catch(jsonErr) {
+      throw new Error('Response formatting error — please try scanning again. This occasionally happens with complex resumes.');
+    }
     renderResults(parsed, candidateName);
 
   } catch(err) {
