@@ -117,12 +117,6 @@
   }
   .gate-hint { font-size: 11px; color: var(--text-faint); margin-top: 10px; }
 
-  /* ── API Key Step ── */
-  .api-step { display: none; }
-  .api-step p { font-size: 13px; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.55; }
-  .api-step p a { color: var(--ceva-blue); }
-  .api-step p strong { color: var(--text); }
-  .api-step .gate-hint { margin-top: 10px; }
 
   /* ── Cards ── */
   .card {
@@ -393,24 +387,6 @@
       <div class="gate-hint">Contact your facility manager if you need access.</div>
     </div>
 
-    <!-- Step 2: API Key -->
-    <div id="api-step" class="api-step">
-      <h2>Enter API Key</h2>
-      <p>Paste your <strong>Groq API key</strong> below to activate the scanner.<br>
-      Your key is used only in this browser tab and is never saved.<br>
-      Get a free key at <a href="https://console.groq.com" target="_blank">console.groq.com</a> → API Keys.</p>
-      <div class="gate-input-wrap">
-        <input type="password" id="api-key-input" placeholder="gsk_..." autocomplete="off"
-          onkeydown="if(event.key==='Enter') setApiKey()" />
-        <button class="gate-toggle" onclick="toggleApiPw()" type="button" title="Show/hide key">
-          <svg id="api-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        </button>
-      </div>
-      <div class="gate-error" id="api-error">That doesn't look like a valid Gemini key. It should start with AIza.</div>
-      <button class="gate-btn" onclick="setApiKey()">Launch Scanner</button>
-      <div class="gate-hint">Each scan uses a tiny fraction of the free quota.</div>
-    </div>
-
   </div>
 </div>
 
@@ -623,15 +599,12 @@ if (window['pdfjs-dist/build/pdf']) {
    PASSWORD GATE + API KEY
 ═══════════════════════════════════════════ */
 const CORRECT_PASSWORD = 'Welcome2Ceva!';
-let groqKey = '';
+const groqKey = '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';
 
 function checkPassword() {
   const entered = document.getElementById('gate-password').value;
   if (entered === CORRECT_PASSWORD) {
-    document.getElementById('gate-error').style.display = 'none';
-    document.getElementById('pw-step').style.display = 'none';
-    document.getElementById('api-step').style.display = 'block';
-    setTimeout(() => document.getElementById('api-key-input').focus(), 50);
+    document.getElementById('gate-overlay').style.display = 'none';
   } else {
     document.getElementById('gate-error').style.display = 'block';
     document.getElementById('gate-password').value = '';
@@ -639,33 +612,9 @@ function checkPassword() {
   }
 }
 
-function setApiKey() {
-  const val = document.getElementById('api-key-input').value.trim();
-  if (!val.startsWith('gsk_')) {
-    document.getElementById('api-error').style.display = 'block';
-    document.getElementById('api-key-input').value = '';
-    document.getElementById('api-key-input').focus();
-    return;
-  }
-  groqKey = val;
-  document.getElementById('gate-overlay').style.display = 'none';
-}
-
 function toggleGatePw() {
   const inp = document.getElementById('gate-password');
   const eye = document.getElementById('gate-eye');
-  if (inp.type === 'password') {
-    inp.type = 'text';
-    eye.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
-  } else {
-    inp.type = 'password';
-    eye.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
-  }
-}
-
-function toggleApiPw() {
-  const inp = document.getElementById('api-key-input');
-  const eye = document.getElementById('api-eye');
   if (inp.type === 'password') {
     inp.type = 'text';
     eye.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
@@ -900,7 +849,6 @@ async function runScan() {
   const jobDesc       = document.getElementById('job-desc').value.trim();
   const candidateName = document.getElementById('candidate-name').value.trim();
 
-  if (!groqKey) { showError('No API key set. Please reload the page and enter your key.'); return; }
   if (!fileReady || !resumeText) { showError('Please upload a resume first.'); return; }
   if (!jobTitle) { showError('Please enter a job title before scanning.'); return; }
 
@@ -963,7 +911,7 @@ Produce a thorough, honest, and actionable fit analysis. Return ONLY valid JSON 
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         temperature: 0.4,
-        max_tokens: 1500,
+        max_tokens: 4096,
         messages: [{ role: 'user', content: prompt }]
       })
     });
